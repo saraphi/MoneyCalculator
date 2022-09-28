@@ -6,18 +6,14 @@ public class ExchangeRate {
     private Currency cTo;
     private double rate;
     
-    public ExchangeRate(Currency cFrom, Currency cTo) {
+    public ExchangeRate(Currency cFrom, Currency cTo, double rate) {
         this.cFrom = cFrom;
         this.cTo = cTo;
-        this.rate = 0.0;
+        this.rate = rate;
     }
-    
-    private void calculateRate() {
-        rate = 0.0;     // ...
-    }
+
     
     public double getRate() {
-        calculateRate();
         return rate;
     }
     

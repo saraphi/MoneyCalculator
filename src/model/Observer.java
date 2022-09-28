@@ -1,4 +1,6 @@
-package view;
+package model;
+
+import view.MoneyCalculator;
 
 public interface Observer {
 
