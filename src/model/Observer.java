@@ -1,10 +1,10 @@
 package model;
 
-import view.MoneyCalculator;
+import view.DisplaySwing;
 
 public interface Observer {
 
-    private void notifyObservers(MoneyCalculator observers) {
+    private void notifyObservers(DisplaySwing observers) {
         
         
     }

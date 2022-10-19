@@ -1,9 +1,50 @@
 package persistence;
 
-import java.util.List;
 import model.Currency;
 
-public interface CurrencyLoader {
+import java.util.ArrayList;
+import java.util.List;
 
-    public List<Currency> loadCurrencies();
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class CurrencyLoader {
+
+    private final String fileName;
+
+    public CurrencyLoader(String fileName) {
+        this.fileName = fileName;
+    }
+    
+    public List<Currency> loadCurrencies() {
+        List<Currency> currencies = new ArrayList<>();
+        
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "utf-8"));
+            
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) break;
+                currencies.add(currencyOf(line));
+            }
+            
+            reader.close();
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("CurrencyLoader :: loadCurrencies, FileNotFound" + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("CurrencyLoader :: loadCurrencies, IO" + e.getMessage());
+        } 
+        
+        return currencies;
+    }
+    
+    private Currency currencyOf(String line) {
+        String[] split = line.split(",");
+        return new Currency(split[0], split[1], split[2]);
+    }
 }

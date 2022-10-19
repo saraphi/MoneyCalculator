@@ -1,11 +1,43 @@
 package persistence;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import model.Currency;
 import model.ExchangeRate;
 
-public interface ExchangeRateLoader {
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class ExchangeRateLoader {
+
+    public ExchangeRate loadExchangeRate(Currency from, Currency to) {
+        return new ExchangeRate(from, to, readExchangeRate(from.getCode(), to.getCode()));
+    }
     
-    public ExchangeRate exchangerateLoader(Currency from, Currency to) throws IOException, MalformedURLException ;
+    private double readExchangeRate(String from, String to) {
+        String line = "";
+        try {
+            line = readURL(new URL("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/" + from + "/" + to + ".json"));
+        } catch (MalformedURLException e) {
+            System.out.println("ExchangeRateLoader :: readExchangeRate, MalformedURL" + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("ExchangeRateLoader :: readURL, IO" + e.getMessage());
+        }
+        
+        return Double.parseDouble(getData(line));
+    }
+    
+    private String readURL(URL url) throws IOException {
+        InputStream inputStream = url.openStream();
+        byte[] buffer = new byte[1024];
+        int lenght = inputStream.read(buffer);
+        String line = new String(buffer, 1, lenght);
+        return line;
+    }
+    
+    private String getData(String line) {
+        String[] split = line.split(",");
+        return split[1].substring(split[1].indexOf(":") + 1, split[1].indexOf("}") - 1);
+    }
 }

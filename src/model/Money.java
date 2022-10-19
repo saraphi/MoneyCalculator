@@ -10,7 +10,7 @@ public class Money {
         this.currency = currency;
     }
     
-    public double getValue() {
+    public double getAmount() {
         return value;
     }
     
