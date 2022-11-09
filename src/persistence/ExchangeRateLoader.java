@@ -15,7 +15,7 @@ public class ExchangeRateLoader implements Loader<ExchangeRate> {
     private Currency from;
     private Currency to;
     
-    public ExchangeRateLoader(Currency from, Currency to) {
+    public void setCurrencies(Currency from, Currency to) {
         this.from = from;
         this.to = to;
     }

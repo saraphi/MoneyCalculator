@@ -44,4 +44,9 @@ public class Currency implements ObserverNotifier {
     public void notifyObservers() {
         for (Observer o: observers) o.refresh();
     }
+    
+    @Override
+    public String toString() {
+        return code + " - " + name;
+    }
 }

@@ -1,8 +1,13 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
+import java.util.List;
+import model.Currency;
 import view.interfaces.Observer;
+import control.*;
+import model.Money;
 
 public class MoneyCalculatorFrame extends JFrame implements Observer {
     
@@ -16,9 +21,20 @@ public class MoneyCalculatorFrame extends JFrame implements Observer {
     JLabel inputLabel = new JLabel("Enter amount to convert:");
     JLabel outputLabel = new JLabel("Total:");
     
-    public MoneyCalculatorFrame(String title) {
+    List<Currency> currencies;
+    
+    public MoneyCalculatorFrame(String title, List<Currency> currencies) {
         super(title);
+        outputTextField.setEditable(false);
+        convertButton.addActionListener(new ButtonActionListener());
+        
+        this.currencies = currencies; 
         setUpGUI();
+        
+        for (Currency currency: currencies) {
+            currencyFromComboBox.addItem(currency);
+            currencyToComboBox.addItem(currency);
+        }
     }
 
     @Override
@@ -26,6 +42,23 @@ public class MoneyCalculatorFrame extends JFrame implements Observer {
         
     }
 
+    private class ButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (inputTextField.getText().isEmpty()) return;
+            
+            Currency currencyFrom = null;
+            Currency currencyTo = null;
+            
+            for (Currency currency: currencies) {
+                if (currencyFromComboBox.getSelectedItem().equals(currency.toString())) currencyFrom = currency;
+                if (currencyToComboBox.getSelectedItem().equals(currency.toString())) currencyTo = currency;
+            }
+            
+            MCController.convert(new Money(Double.parseDouble(inputTextField.getText()), currencyFrom), currencyTo);
+        }
+    }
+    
     private void setUpGUI() {
         getContentPane().add(setMainPanel());
 
@@ -35,14 +68,12 @@ public class MoneyCalculatorFrame extends JFrame implements Observer {
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-    
-        refresh();
     }
     
     private JPanel setMainPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-
+        
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(setTopPanel());
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));

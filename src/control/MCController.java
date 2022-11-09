@@ -1,12 +1,15 @@
 package control;
 
-import view_clase.DialogSwing;
-import view_clase.DisplaySwing;
 import persistence.ExchangeRateLoader;
+import model.*;
 
 public class MCController {
-
-    public MCController(DialogSwing dialogSwing, DisplaySwing displaySwing, ExchangeRateLoader exchangeRateLoader) {
+    
+    private static final ExchangeRateLoader exchangeRateLoader = new ExchangeRateLoader();
+    
+    public static void convert(Money money, Currency currencyTo) {
+        exchangeRateLoader.setCurrencies(money.getCurrency(), currencyTo);
+        ExchangeRate rate = exchangeRateLoader.load();
         
     }
 }
