@@ -1,4 +1,4 @@
-package view;
+package view_clase;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -14,8 +14,6 @@ public class MoneyCalculatorGUI extends JFrame {
         setVisible(true);
     }
 
-    
-    
     private static class WindowCloseManager extends WindowAdapter {
 
         @Override

@@ -1,7 +1,7 @@
-package view;
+package view_clase;
 
 import java.awt.BorderLayout;
-import view.interfaces.Display;
+import view_clase.interfaces.Display;
 import javax.swing.*;
 import model.*;
 

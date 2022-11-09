@@ -1,6 +1,7 @@
 package control;
 
-import view.*;
+import view_clase.DialogSwing;
+import view_clase.DisplaySwing;
 import persistence.ExchangeRateLoader;
 
 public class MCController {

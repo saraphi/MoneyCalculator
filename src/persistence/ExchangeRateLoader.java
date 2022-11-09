@@ -1,5 +1,6 @@
 package persistence;
 
+import persistence.interfaces.Loader;
 import model.Currency;
 import model.ExchangeRate;
 
@@ -9,9 +10,18 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ExchangeRateLoader {
+public class ExchangeRateLoader implements Loader<ExchangeRate> {
 
-    public ExchangeRate loadExchangeRate(Currency from, Currency to) {
+    private Currency from;
+    private Currency to;
+    
+    public ExchangeRateLoader(Currency from, Currency to) {
+        this.from = from;
+        this.to = to;
+    }
+    
+    @Override
+    public ExchangeRate load() {
         return new ExchangeRate(from, to, readExchangeRate(from.getCode(), to.getCode()));
     }
     

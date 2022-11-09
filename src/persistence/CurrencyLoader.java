@@ -1,5 +1,6 @@
 package persistence;
 
+import persistence.interfaces.Loader;
 import model.Currency;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.io.InputStreamReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class CurrencyLoader {
+public class CurrencyLoader implements Loader<List<Currency>> {
 
     private final String fileName;
 
@@ -20,7 +21,8 @@ public class CurrencyLoader {
         this.fileName = fileName;
     }
     
-    public List<Currency> loadCurrencies() {
+    @Override
+    public List<Currency> load() {
         List<Currency> currencies = new ArrayList<>();
         
         try {
