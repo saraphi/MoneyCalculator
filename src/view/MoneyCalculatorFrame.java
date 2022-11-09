@@ -6,80 +6,91 @@ import view.interfaces.Observer;
 
 public class MoneyCalculatorFrame extends JFrame implements Observer {
     
-    JComboBox comboBoxCurrencyFrom = new JComboBox();
-    JComboBox comboBoxCurrencyTo = new JComboBox();
-    
-    JTextField textFieldCurrencyFrom = new JTextField("", 20);
-    JTextField textFieldCurrencyTo = new JTextField("", 20);
-    
-    JButton buttonCalculate = new JButton("Calculate");
+    JComboBox currencyFromComboBox = new JComboBox();
+    JComboBox currencyToComboBox = new JComboBox();
+    JTextField inputTextField = new JTextField();
+    JTextField outputTextField = new JTextField();
+    JButton convertButton = new JButton("Convert");
+    JLabel fromLabel = new JLabel("From:");
+    JLabel toLabel = new JLabel("To:");
+    JLabel inputLabel = new JLabel("Enter amount to convert:");
+    JLabel outputLabel = new JLabel("Total:");
     
     public MoneyCalculatorFrame(String title) {
         super(title);
         setUpGUI();
     }
 
-    private JPanel setLeftPanel() {
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+    @Override
+    public void refresh() {
         
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.add(comboBoxCurrencyFrom);
-        panel.setBorder(BorderFactory.createEmptyBorder(120,10,10,10));
-        leftPanel.add(panel); 
-        
-        panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(textFieldCurrencyFrom);
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,90,10));
-        leftPanel.add(panel); 
-        leftPanel.setSize(new Dimension(250, 200));
-        return leftPanel;
     }
-    
-    private JPanel setRightPanel() {
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.add(comboBoxCurrencyTo);
-        panel.setBorder(BorderFactory.createEmptyBorder(120,10,10,10));
-        rightPanel.add(panel); 
-        
-        panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(textFieldCurrencyTo);
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,90,10));
-        rightPanel.add(panel); 
-        rightPanel.setSize(new Dimension(250, 200));
-        return rightPanel;
-    }
-    
+
     private void setUpGUI() {
-        /*
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-        
-        mainPanel.add(setLeftPanel());
-        mainPanel.add(setRightPanel());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        */
-        getContentPane().add(setLeftPanel(), BorderLayout.WEST);    
-        getContentPane().add(setRightPanel(), BorderLayout.EAST);
-        
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panel.setBorder(BorderFactory.createEmptyBorder(10,400,10,10));
-        getContentPane().add(panel.add(buttonCalculate), BorderLayout.SOUTH);
-        
+        getContentPane().add(setMainPanel());
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(500, 400));
+        setPreferredSize(new Dimension(450, 270));
         pack();
         setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
     
         refresh();
     }
+    
+    private JPanel setMainPanel() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
-    @Override
-    public void refresh() {
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        mainPanel.add(setTopPanel());
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        mainPanel.add(setDataPanel(inputLabel, inputTextField));
+        mainPanel.add(setDataPanel(outputLabel, outputTextField));
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        mainPanel.add(setButtonPanel());
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
+        return mainPanel;
+    }
+         
+    private JPanel setTopPanel() {
+        JPanel topPanel = new JPanel(new FlowLayout());
+        topPanel.add(setFixedPanel(fromLabel, currencyFromComboBox));
+        topPanel.add(Box.createRigidArea(new Dimension(100, 0)));
+        topPanel.add(setFixedPanel(toLabel, currencyToComboBox));
+        return topPanel;
+    }
+
+    private JPanel setDataPanel(JLabel label, JTextField textField) {
+        JPanel dataPanel = new JPanel(new FlowLayout());
+        dataPanel.add(Box.createRigidArea(new Dimension(50, 0)));
+        dataPanel.add(setFixedPanel(label, textField));
+        dataPanel.add(Box.createRigidArea(new Dimension(50, 0)));
+        return dataPanel;
+    }
+    
+    private JPanel setButtonPanel() {
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(convertButton);
+        return panel;
+    }
+    
+    private JPanel setFixedPanel(JLabel label, JComponent component) {
+        JPanel labelPanel = new JPanel(new BorderLayout());
+        labelPanel.add(label, BorderLayout.CENTER);
+        
+        JPanel componentPanel = new JPanel(new BorderLayout());
+        componentPanel.setPreferredSize(new Dimension(120, 20));
+        componentPanel.add(component, BorderLayout.CENTER);
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(labelPanel);
+        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+        panel.add(componentPanel);
+
+        return panel;
     }
 }
