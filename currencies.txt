@@ -1,2 +1,4 @@
-usd, Dólar, $
-eur, Euro, €
+usd,Dolar USA,$
+eur,Euro UE,€
+jpy,Yen Japón,¥
+gbp,Libra Esterlina,£

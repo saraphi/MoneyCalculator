@@ -1,13 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import model.interfaces.ObserverNotifier;
-import view.interfaces.Observer;
+public class ExchangeRate {
 
-public class ExchangeRate implements ObserverNotifier {
-
-    private final List<Observer> observers = new ArrayList<>();
     private final double rate;
     private Currency cFrom;
     private Currency cTo;
@@ -18,6 +12,10 @@ public class ExchangeRate implements ObserverNotifier {
         this.rate = rate;
     }
 
+    public double convert(double value) {
+        return value*rate;
+    }
+    
     public double getRate() {
         return rate;
     }
@@ -32,20 +30,5 @@ public class ExchangeRate implements ObserverNotifier {
 
     public Currency[] getCurrencies() {
         return new Currency[] {cFrom, cTo};
-    }
-
-    @Override
-    public void addObserver(Observer o) {
-        observers.add(o);
-    }
-
-    @Override
-    public void removeObserver(Observer o) {
-        observers.remove(o);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer o: observers) o.refresh();
     }
 }

@@ -4,31 +4,36 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.List;
-import model.Currency;
-import view.interfaces.Observer;
-import control.*;
-import model.Money;
 
-public class MoneyCalculatorFrame extends JFrame implements Observer {
+import model.*;
+import control.*;
+import view.interfaces.*;
+
+public class SwingMCView extends JFrame implements MCView {
     
-    JComboBox currencyFromComboBox = new JComboBox();
-    JComboBox currencyToComboBox = new JComboBox();
-    JTextField inputTextField = new JTextField();
-    JTextField outputTextField = new JTextField();
-    JButton convertButton = new JButton("Convert");
-    JLabel fromLabel = new JLabel("From:");
-    JLabel toLabel = new JLabel("To:");
-    JLabel inputLabel = new JLabel("Enter amount to convert:");
-    JLabel outputLabel = new JLabel("Total:");
+    private final JComboBox<Currency> currencyFromComboBox = new JComboBox<>();
+    private final JComboBox<Currency> currencyToComboBox = new JComboBox<>();
+    private final JTextField inputTextField = new JTextField();
+    private final JTextField outputTextField = new JTextField();
+    private final JButton convertButton = new JButton("Convert");
+    private final JLabel fromLabel = new JLabel("From:");
+    private final JLabel toLabel = new JLabel("To:");
+    private final JLabel inputLabel = new JLabel("Enter amount to convert:");
+    private final JLabel outputLabel = new JLabel("Total:");
     
-    List<Currency> currencies;
+    private final MCController controller;
+    private final List<Currency> currencies;
     
-    public MoneyCalculatorFrame(String title, List<Currency> currencies) {
+    private Money moneyTo;
+    private Money moneyFrom;
+    private Currency currencyTo;
+    
+    public SwingMCView(String title, List<Currency> currencies, MCController controller) {
         super(title);
         outputTextField.setEditable(false);
-        convertButton.addActionListener(new ButtonActionListener());
-        
-        this.currencies = currencies; 
+        convertButton.addActionListener(new ButtonActionListener(this));
+        this.currencies = currencies;
+        this.controller = controller;
         setUpGUI();
         
         for (Currency currency: currencies) {
@@ -38,24 +43,39 @@ public class MoneyCalculatorFrame extends JFrame implements Observer {
     }
 
     @Override
-    public void refresh() {
-        
+    public void render() {
+        if (moneyTo != null) outputTextField.setText(String.valueOf(moneyTo.getAmount()) + " " + moneyTo.getCurrency().getSymbol());
+    }
+
+    @Override
+    public void setMoneyTo(Money m) {
+        moneyTo = m;
+    }
+
+    @Override
+    public Money getMoneyFrom() {
+        return moneyFrom;
+    }
+
+    @Override
+    public Currency getCurrencyTo() {
+        return currencyTo;
     }
 
     private class ButtonActionListener implements ActionListener {
+        
+        private MCView view;
+        
+        public ButtonActionListener(MCView v) {
+            this.view = v;
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (inputTextField.getText().isEmpty()) return;
-            
-            Currency currencyFrom = null;
-            Currency currencyTo = null;
-            
-            for (Currency currency: currencies) {
-                if (currencyFromComboBox.getSelectedItem().equals(currency.toString())) currencyFrom = currency;
-                if (currencyToComboBox.getSelectedItem().equals(currency.toString())) currencyTo = currency;
-            }
-            
-            MCController.convert(new Money(Double.parseDouble(inputTextField.getText()), currencyFrom), currencyTo);
+            if (inputTextField.getText().isEmpty() || currencyToComboBox.getSelectedIndex() < 0 || currencyFromComboBox.getSelectedIndex() < 0) return;
+            moneyFrom = new Money(Double.parseDouble(inputTextField.getText()), (Currency) currencyFromComboBox.getSelectedItem());
+            currencyTo = (Currency) currencyToComboBox.getSelectedItem();
+            controller.notifyChanges(view);
         }
     }
     
@@ -69,6 +89,7 @@ public class MoneyCalculatorFrame extends JFrame implements Observer {
         setResizable(false);
         setVisible(true);
     }
+        
     
     private JPanel setMainPanel() {
         JPanel mainPanel = new JPanel();

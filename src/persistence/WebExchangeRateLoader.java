@@ -1,6 +1,5 @@
 package persistence;
 
-import persistence.interfaces.Loader;
 import model.Currency;
 import model.ExchangeRate;
 
@@ -9,19 +8,13 @@ import java.io.InputStream;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import persistence.interfaces.ExchangeRateLoader;
 
-public class ExchangeRateLoader implements Loader<ExchangeRate> {
-
-    private Currency from;
-    private Currency to;
-    
-    public void setCurrencies(Currency from, Currency to) {
-        this.from = from;
-        this.to = to;
-    }
+public class WebExchangeRateLoader implements ExchangeRateLoader {
     
     @Override
-    public ExchangeRate load() {
+    public ExchangeRate load(Currency from, Currency to) {
         return new ExchangeRate(from, to, readExchangeRate(from.getCode(), to.getCode()));
     }
     
@@ -41,13 +34,17 @@ public class ExchangeRateLoader implements Loader<ExchangeRate> {
     private String readURL(URL url) throws IOException {
         InputStream inputStream = url.openStream();
         byte[] buffer = new byte[1024];
-        int lenght = inputStream.read(buffer);
-        String line = new String(buffer, 1, lenght);
+        
+        int length = 0;
+        int readBytes;
+        
+        while((readBytes = inputStream.read(buffer)) >= 0) length += readBytes;
+        
+        String line = new String(buffer, 1, length);
         return line;
     }
     
     private String getData(String line) {
-        String[] split = line.split(",");
-        return split[1].substring(split[1].indexOf(":") + 1, split[1].indexOf("}") - 1);
+        return line.split("\": ")[2].substring(0, 8);
     }
 }
