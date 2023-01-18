@@ -13,7 +13,7 @@ public class ExchangeRate {
     }
 
     public double convert(double value) {
-        return value*rate;
+        return Math.round((value*rate)*100.0)/100.0;
     }
     
     public double getRate() {
