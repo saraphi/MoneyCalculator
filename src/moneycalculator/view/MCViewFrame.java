@@ -1,15 +1,16 @@
-package view;
+package moneycalculator.view;
 
+import moneycalculator.model.Money;
+import moneycalculator.model.Currency;
+import moneycalculator.control.MCController;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.List;
+import moneycalculator.view.interfaces.MCView;
 
-import model.*;
-import control.*;
-import view.interfaces.*;
 
-public class SwingMCView extends JFrame implements MCView {
+public class MCViewFrame extends JFrame implements MCView {
     
     private final JComboBox<Currency> currencyFromComboBox = new JComboBox<>();
     private final JComboBox<Currency> currencyToComboBox = new JComboBox<>();
@@ -21,61 +22,41 @@ public class SwingMCView extends JFrame implements MCView {
     private final JLabel inputLabel = new JLabel("Enter amount to convert:");
     private final JLabel outputLabel = new JLabel("Total:");
     
-    private final MCController controller;
     private final List<Currency> currencies;
     
-    private Money moneyTo;
-    private Money moneyFrom;
-    private Currency currencyTo;
-    
-    public SwingMCView(String title, List<Currency> currencies, MCController controller) {
+    public MCViewFrame(String title, List<Currency> currencies) {
         super(title);
         outputTextField.setEditable(false);
-        convertButton.addActionListener(new ButtonActionListener(this));
         this.currencies = currencies;
-        this.controller = controller;
         setUpGUI();
-        
-        for (Currency currency: currencies) {
-            currencyFromComboBox.addItem(currency);
-            currencyToComboBox.addItem(currency);
-        }
+        setUpInfo();
     }
 
     @Override
-    public void render() {
-        if (moneyTo != null) outputTextField.setText(String.valueOf(moneyTo.getAmount()) + " " + moneyTo.getCurrency().getSymbol());
-    }
-
-    @Override
-    public void setMoneyTo(Money m) {
-        moneyTo = m;
+    public void refreshMoney(Money money) {
+        outputTextField.setText(String.valueOf(money.getAmount()) + " " + money.getCurrency().getSymbol());
     }
 
     @Override
     public Money getMoneyFrom() {
-        return moneyFrom;
+        if (inputTextField.getText().isEmpty()) return null;
+        return new Money(Double.parseDouble(inputTextField.getText()), (Currency) currencyFromComboBox.getSelectedItem());
     }
 
     @Override
     public Currency getCurrencyTo() {
-        return currencyTo;
+        return (Currency) currencyToComboBox.getSelectedItem();
     }
-
-    private class ButtonActionListener implements ActionListener {
-        
-        private MCView view;
-        
-        public ButtonActionListener(MCView v) {
-            this.view = v;
-        }
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (inputTextField.getText().isEmpty() || currencyToComboBox.getSelectedIndex() < 0 || currencyFromComboBox.getSelectedIndex() < 0) return;
-            moneyFrom = new Money(Double.parseDouble(inputTextField.getText()), (Currency) currencyFromComboBox.getSelectedItem());
-            currencyTo = (Currency) currencyToComboBox.getSelectedItem();
-            controller.notifyChanges(view);
+    
+    @Override
+    public void addConvertListener(ActionListener listener) {
+        convertButton.addActionListener(listener);
+    }
+    
+    private void setUpInfo() {
+        for (Currency currency: currencies) {
+            currencyFromComboBox.addItem(currency);
+            currencyToComboBox.addItem(currency);
         }
     }
     
@@ -89,7 +70,6 @@ public class SwingMCView extends JFrame implements MCView {
         setResizable(false);
         setVisible(true);
     }
-        
     
     private JPanel setMainPanel() {
         JPanel mainPanel = new JPanel();

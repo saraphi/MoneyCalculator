@@ -1,7 +1,7 @@
-package persistence.interfaces;
+package moneycalculator.persistence.interfaces;
 
 import java.util.List;
-import model.Currency;
+import moneycalculator.model.Currency;
 
 public interface CurrencyLoader {
     

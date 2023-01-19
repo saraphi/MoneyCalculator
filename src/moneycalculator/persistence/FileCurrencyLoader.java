@@ -1,6 +1,6 @@
-package persistence;
+package moneycalculator.persistence;
 
-import model.Currency;
+import moneycalculator.model.Currency;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import persistence.interfaces.CurrencyLoader;
+import moneycalculator.persistence.interfaces.CurrencyLoader;
 
 public class FileCurrencyLoader implements CurrencyLoader {
 

@@ -1,7 +1,7 @@
-package persistence;
+package moneycalculator.persistence;
 
-import model.Currency;
-import model.ExchangeRate;
+import moneycalculator.model.Currency;
+import moneycalculator.model.ExchangeRate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import persistence.interfaces.ExchangeRateLoader;
+import moneycalculator.persistence.interfaces.ExchangeRateLoader;
 
 public class WebExchangeRateLoader implements ExchangeRateLoader {
     
@@ -38,13 +38,13 @@ public class WebExchangeRateLoader implements ExchangeRateLoader {
         int length = 0;
         int readBytes;
         
-        while((readBytes = inputStream.read(buffer)) >= 0) length += readBytes;
+        while ((readBytes = inputStream.read(buffer)) >= 0) length += readBytes;
         
         String line = new String(buffer, 1, length);
         return line;
     }
     
     private String getData(String line) {
-        return line.split("\": ")[2].substring(0, 8);
+        return line.split(": ")[2].substring(0, line.split(": ")[2].indexOf("}") - 1);
     }
 }
