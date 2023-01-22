@@ -2,12 +2,10 @@ package moneycalculator.view;
 
 import moneycalculator.model.Money;
 import moneycalculator.model.Currency;
-import moneycalculator.control.MCController;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.List;
-import moneycalculator.view.interfaces.MCView;
 
 
 public class MCViewFrame extends JFrame implements MCView {

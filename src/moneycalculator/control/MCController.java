@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import moneycalculator.model.Money;
 import moneycalculator.model.ExchangeRate;
 import moneycalculator.model.Currency;
-import moneycalculator.persistence.interfaces.ExchangeRateLoader;
-import moneycalculator.view.interfaces.MCView;
+import moneycalculator.persistence.exchangerate.ExchangeRateLoader;
+import moneycalculator.view.MCView;
 
 public class MCController {
     

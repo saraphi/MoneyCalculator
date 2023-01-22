@@ -1,4 +1,4 @@
-package moneycalculator.persistence.interfaces;
+package moneycalculator.persistence.exchangerate;
 
 import moneycalculator.model.Currency;
 import moneycalculator.model.ExchangeRate;

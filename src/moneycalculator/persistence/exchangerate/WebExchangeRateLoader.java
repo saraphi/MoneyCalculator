@@ -1,5 +1,6 @@
-package moneycalculator.persistence;
+package moneycalculator.persistence.exchangerate;
 
+import moneycalculator.persistence.exchangerate.ExchangeRateLoader;
 import moneycalculator.model.Currency;
 import moneycalculator.model.ExchangeRate;
 
@@ -9,7 +10,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import moneycalculator.persistence.interfaces.ExchangeRateLoader;
 
 public class WebExchangeRateLoader implements ExchangeRateLoader {
     

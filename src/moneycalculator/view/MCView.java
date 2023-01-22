@@ -1,4 +1,4 @@
-package moneycalculator.view.interfaces;
+package moneycalculator.view;
 
 import java.awt.event.ActionListener;
 import moneycalculator.model.Currency;

@@ -1,4 +1,4 @@
-package moneycalculator.persistence.interfaces;
+package moneycalculator.persistence.currency;
 
 import java.util.List;
 import moneycalculator.model.Currency;
