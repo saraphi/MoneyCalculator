@@ -5,23 +5,22 @@ import java.awt.event.ActionListener;
 import moneycalculator.model.Money;
 import moneycalculator.model.ExchangeRate;
 import moneycalculator.model.Currency;
-import moneycalculator.persistence.exchangerate.ExchangeRateLoader;
-import moneycalculator.view.MCView;
+import moneycalculator.view.persistence.exchangerate.ExchangeRateLoader;
+import moneycalculator.view.ui.MCView;
 
 public class MCController {
     
-    MCView MCView;
-    ExchangeRateLoader exchangeRateLoader;
+    private MCView MCView;
+    private ExchangeRateLoader exchangeRateLoader;
     
     public MCController(ExchangeRateLoader exchangeRateLoader, MCView view) {
         this.exchangeRateLoader = exchangeRateLoader;
         this.MCView = view;
-        this.MCView.addConvertListener(new ConvertListener());
+        this.MCView.addConvertListener(createConvertListener());
     }
-
-    private class ConvertListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    
+    private ActionListener createConvertListener() {
+        return (ActionEvent ae) -> {
             Money moneyFrom = MCView.getMoneyFrom();
             Currency currencyTo = MCView.getCurrencyTo();
             
@@ -29,6 +28,6 @@ public class MCController {
             
             ExchangeRate exchangeRate = exchangeRateLoader.load(moneyFrom.getCurrency(), currencyTo);
             MCView.refreshMoney(new Money(exchangeRate.convert(moneyFrom.getAmount()), currencyTo));
-        }
+        };
     }
 }

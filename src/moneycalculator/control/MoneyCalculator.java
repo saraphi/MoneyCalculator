@@ -1,15 +1,15 @@
 package moneycalculator.control;
 
-import moneycalculator.view.MCViewFrame;
-import moneycalculator.persistence.exchangerate.WebExchangeRateLoader;
-import moneycalculator.persistence.currency.CurrencyLoader;
-import moneycalculator.persistence.currency.FileCurrencyLoader;
-import moneycalculator.persistence.exchangerate.ExchangeRateLoader;
+import moneycalculator.view.ui.MCViewFrame;
+import moneycalculator.view.persistence.exchangerate.WebExchangeRateLoader;
+import moneycalculator.view.persistence.currency.CurrencyLoader;
+import moneycalculator.view.persistence.currency.FileCurrencyLoader;
+import moneycalculator.view.persistence.exchangerate.ExchangeRateLoader;
 import moneycalculator.model.Currency;
 import moneycalculator.control.MCController;
 
 import java.util.List;
-import moneycalculator.view.MCView;
+import moneycalculator.view.ui.MCView;
 
 public class MoneyCalculator {
 

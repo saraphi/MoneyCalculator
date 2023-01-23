@@ -1,5 +1,6 @@
-package moneycalculator.view;
+package moneycalculator.view.ui;
 
+import moneycalculator.view.ui.MCView;
 import moneycalculator.model.Money;
 import moneycalculator.model.Currency;
 import java.awt.*;

@@ -1,6 +1,6 @@
-package moneycalculator.persistence.currency;
+package moneycalculator.view.persistence.currency;
 
-import moneycalculator.persistence.currency.CurrencyLoader;
+import moneycalculator.view.persistence.currency.CurrencyLoader;
 import moneycalculator.model.Currency;
 
 import java.util.ArrayList;

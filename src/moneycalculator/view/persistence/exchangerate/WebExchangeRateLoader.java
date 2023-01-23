@@ -1,6 +1,6 @@
-package moneycalculator.persistence.exchangerate;
+package moneycalculator.view.persistence.exchangerate;
 
-import moneycalculator.persistence.exchangerate.ExchangeRateLoader;
+import moneycalculator.view.persistence.exchangerate.ExchangeRateLoader;
 import moneycalculator.model.Currency;
 import moneycalculator.model.ExchangeRate;
 
